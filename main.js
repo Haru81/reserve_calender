@@ -102,7 +102,7 @@ function showDetail(dateStr, day) {
     } else if (data.status === '予約済' && data.time) {
         detailInfo.textContent = `${data.time} 実験予約済み`;
     } else if (data.status === '対応不可') {
-        detailInfo.textContent = 'この日は対応できません';
+        detailInfo.textContent = `この日の${data.time}は対応できません`;
     }
     
     detailPanel.classList.add('active');
