@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>実験予約カレンダー</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>実験予約カレンダー</h1>
+    
+    <div class="controls">
+        <button id="prevMonth">← 前月</button>
+        <div class="current-month" id="currentMonth"></div>
+        <button id="nextMonth">次月 →</button>
+    </div>
+    
+    <div class="calendar">
+        <div class="calendar-grid" id="calendar"></div>
+    </div>
+    
+    <div class="detail-panel" id="detailPanel">
+        <h3 id="detailDate"></h3>
+        <p id="detailInfo"></p>
+    </div>
+    
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #d4edda;"></div>
+            <span>空き</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #fff3cd;"></div>
+            <span>実験予約済</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #f8d7da;"></div>
+            <span>対応不可</span>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
