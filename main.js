@@ -62,23 +62,40 @@ function renderCalendar() {
         dayCell.appendChild(dayNumber);
         
         // スケジュールデータがあれば表示
-        if (scheduleData[dateStr]) {
-            const status = scheduleData[dateStr].status;
-            const statusEl = document.createElement('div');
-            statusEl.className = 'day-status';
+        if (scheduleData[dateStr] && scheduleData[dateStr].slots) {
+            const slots = scheduleData[dateStr].slots;
+            const statusContainer = document.createElement('div');
+            statusContainer.className = 'status-container';
             
-            if (status === '空き') {
-                statusEl.classList.add('status-available');
-                statusEl.textContent = '空き';
-            } else if (status === '予約済') {
-                statusEl.classList.add('status-booked');
-                statusEl.textContent = '予約済';
-            } else if (status === '対応不可') {
-                statusEl.classList.add('status-unavailable');
-                statusEl.textContent = '対応不可';
+            // 最大2つまで表示
+            const displaySlots = slots.slice(0, 2);
+            displaySlots.forEach(slot => {
+                const statusEl = document.createElement('div');
+                statusEl.className = 'day-status';
+                
+                if (slot.status === '空き') {
+                    statusEl.classList.add('status-available');
+                    statusEl.textContent = slot.time ? `空き ${slot.time}` : '空き';
+                } else if (slot.status === '予約済') {
+                    statusEl.classList.add('status-booked');
+                    statusEl.textContent = slot.time ? `予約済` : '予約済';
+                } else if (slot.status === '対応不可') {
+                    statusEl.classList.add('status-unavailable');
+                    statusEl.textContent = slot.time ? `対応不可` : '対応不可';
+                }
+                
+                statusContainer.appendChild(statusEl);
+            });
+            
+            // 3つ以上ある場合は「他」表示
+            if (slots.length > 2) {
+                const moreEl = document.createElement('div');
+                moreEl.className = 'day-status status-more';
+                moreEl.textContent = `他${slots.length - 2}件`;
+                statusContainer.appendChild(moreEl);
             }
             
-            dayCell.appendChild(statusEl);
+            dayCell.appendChild(statusContainer);
             
             // クリックイベント
             dayCell.addEventListener('click', () => showDetail(dateStr, day));
@@ -97,12 +114,26 @@ function showDetail(dateStr, day) {
     
     detailDate.textContent = `${currentYear}年${currentMonth + 1}月${day}日`;
     
-    if (data.status === '空き' && data.time) {
-        detailInfo.textContent = `対応可能時間: ${data.time}`;
-    } else if (data.status === '予約済' && data.time) {
-        detailInfo.textContent = `${data.time} 実験予約済み`;
-    } else if (data.status === '対応不可') {
-        detailInfo.textContent = `この日の${data.time}は対応できません`;
+    if (data && data.slots) {
+        let detailHtml = '<ul class="detail-list">';
+        
+        data.slots.forEach(slot => {
+            let text = '';
+            if (slot.status === '空き') {
+                text = `<span class="detail-status status-available">空き</span>`;
+                if (slot.time) text += ` ${slot.time}`;
+            } else if (slot.status === '予約済') {
+                text = `<span class="detail-status status-booked">予約済</span>`;
+                if (slot.time) text += ` ${slot.time}`;
+            } else if (slot.status === '対応不可') {
+                text = `<span class="detail-status status-unavailable">対応不可</span>`;
+                if (slot.time) text += ` ${slot.time}`;
+            }
+            detailHtml += `<li>${text}</li>`;
+        });
+        
+        detailHtml += '</ul>';
+        detailInfo.innerHTML = detailHtml;
     }
     
     detailPanel.classList.add('active');
