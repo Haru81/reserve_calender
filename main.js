@@ -82,8 +82,11 @@ function renderCalendar() {
                 } else if (slot.status === '対応不可') {
                     statusEl.classList.add('status-unavailable');
                     statusEl.textContent = slot.time ? `対応不可` : '対応不可';
+                } else if (slot.status === '日程調整中') {
+                    statusEl.classList.add('status-adjusting');
+                    statusEl.textContent = slot.time ? `日程調整中` : '日程調整中';
                 }
-                
+
                 statusContainer.appendChild(statusEl);
             });
             
@@ -127,6 +130,9 @@ function showDetail(dateStr, day) {
                 if (slot.time) text += ` ${slot.time}`;
             } else if (slot.status === '対応不可') {
                 text = `<span class="detail-status status-unavailable">対応不可</span>`;
+                if (slot.time) text += ` ${slot.time}`;
+            } else if (slot.status === '日程調整中') {
+                text = `<span class="detail-status status-adjusting">日程調整中</span>`;
                 if (slot.time) text += ` ${slot.time}`;
             }
             detailHtml += `<li>${text}</li>`;

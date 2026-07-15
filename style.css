@@ -151,6 +151,11 @@ h1 {
     color: #721c24;
 }
 
+.status-adjusting {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
 .status-more {
     background-color: #e0e0e0;
     color: #555;
