@@ -1,6 +1,6 @@
 let scheduleData = {};
 let currentYear = 2026;
-let currentMonth = 8; // 0 = January
+let currentMonth = 9; // 0 = January
 
 const dayHeaders = ['日', '月', '火', '水', '木', '金', '土'];
 
